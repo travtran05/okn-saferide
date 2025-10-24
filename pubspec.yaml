@@ -1,0 +1,38 @@
+name: okn_saferide
+description: OKN SafeRide - Impairment detection app using eye tracking
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # UI
+  cupertino_icons: ^1.0.6
+  
+  # Camera & ML (add these when ready to implement)
+  # camera: ^0.10.5+5
+  # google_ml_kit: ^0.16.3
+  
+  # Location services (add when ready)
+  # geolocator: ^10.1.0
+  # url_launcher: ^6.2.1
+  
+  # State management (if needed later)
+  # provider: ^6.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  
+  # Uncomment when you add assets
+  # assets:
+  #   - assets/images/
+  #   - assets/icons/
