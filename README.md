@@ -1,6 +1,6 @@
 # OKN SafeRide 🚗👁️
 
-A Flutter mobile app for detecting impairment using **Optokinetic Nystagmus (OKN)** eye tracking and providing safe transportation options.
+A React Native mobile app built with **Expo Go** for detecting impairment using **Optokinetic Nystagmus (OKN)** eye tracking and providing safe transportation options.
 
 ## ⚠️ Demo / Research Purpose Only
 This app is for **demonstration and research purposes only**. It is not a medical device and should not be used to make real driving decisions.
@@ -25,24 +25,40 @@ OKN SafeRide helps detect potential impairment by:
 
 ## 🚀 Quick Start
 
-### For Development:
+### Prerequisites
+- **Node.js** (v18 or higher) - [Download here](https://nodejs.org/)
+- **Expo Go app** on your phone - [iOS](https://apps.apple.com/app/expo-go/id982107779) | [Android](https://play.google.com/store/apps/details?id=host.exp.exponent)
+
+### Installation
+
 ```bash
 # 1. Clone the repo
 git clone https://github.com/YOUR_USERNAME/okn-saferide.git
 cd okn-saferide
 
 # 2. Install dependencies
-flutter pub get
+npm install
 
-# 3. Run on your device
-flutter run
+# 3. Start the development server
+npm start
 ```
 
-### For Your Friend (to test on their iPhone):
-1. **Share this repo**: Send them the GitHub link
-2. **They clone it**: `git clone https://github.com/YOUR_USERNAME/okn-saferide.git`
-3. **They follow setup**: See [SETUP_GUIDE.md](SETUP_GUIDE.md)
-4. **Run on their device**: Connect iPhone and run `flutter run`
+### Running on Your Phone
+
+1. **Start the dev server**: Run `npm start` in the project directory
+2. **Open Expo Go** on your phone
+3. **Scan the QR code** displayed in the terminal or browser
+4. The app will load on your phone! 🎉
+
+### Running on Simulator/Emulator
+
+```bash
+# iOS Simulator (Mac only)
+npm run ios
+
+# Android Emulator
+npm run android
+```
 
 ---
 
@@ -50,15 +66,15 @@ flutter run
 
 ### ✅ Phase 1 (Complete) - Basic UI
 - [x] App structure and navigation
-- [x] Animated stripe stimulus (basic)
+- [x] Animated stripe stimulus
 - [x] Progress ring and timer
 - [x] Results display
 - [x] Metrics cards
 - [x] Safe ride suggestions UI
 
 ### 🔄 Phase 2 (Next) - Camera & Eye Tracking
-- [ ] Camera access
-- [ ] Face detection (ML Kit)
+- [ ] Camera access (expo-camera)
+- [ ] Face detection
 - [ ] Iris/pupil tracking
 - [ ] Real-time eye position calculation
 - [ ] OKN gain algorithm
@@ -68,143 +84,153 @@ flutter run
 - [ ] Map integration
 - [ ] Deep links to ride apps
 - [ ] Friend contact system
-- [ ] Data persistence
+- [ ] Data persistence (AsyncStorage)
 - [ ] Settings and calibration
 
 ---
 
-## 🛠️ Development Setup
+## 🛠️ Development
 
-**Full setup instructions**: [SETUP_GUIDE.md](SETUP_GUIDE.md)
-
-**Quick checklist**:
-- ✅ Flutter SDK installed
-- ✅ VS Code with Flutter extension
-- ✅ Xcode installed (for iOS)
-- ✅ iPhone in Developer Mode
-- ✅ Apple ID configured in Xcode
-
----
-
-## 📱 Testing on iPhone
-
-### First Time Setup:
-1. **Connect iPhone** via USB
-2. **Trust computer** on iPhone
-3. **Enable Developer Mode**: Settings > Privacy & Security > Developer Mode
-4. **Run app**: `flutter run` or press F5 in VS Code
-5. **Trust developer**: Settings > General > Device Management > Trust your Apple ID
-
-### Every Time After:
-Just run `flutter run` - that's it! ✨
-
----
-
-## 📦 Project Structure
+### Project Structure
 
 ```
 okn-saferide/
-├── lib/
-│   └── main.dart           # Main app code
-├── ios/                    # iOS-specific files
-├── android/                # Android-specific files (future)
-├── pubspec.yaml            # Dependencies
-├── SETUP_GUIDE.md          # Detailed setup instructions
-├── IOS_PERMISSIONS.md      # iOS permission configuration
+├── App.tsx                 # Main app code
+├── assets/                 # Images and icons
+├── app.json                # Expo configuration
+├── package.json            # Dependencies
+├── tsconfig.json           # TypeScript config
 └── README.md               # This file
 ```
 
+### Adding Features
+
+#### 1. Camera Access
+```bash
+npm install expo-camera
+```
+
+Then request permissions in App.tsx:
+```typescript
+import { Camera } from 'expo-camera';
+
+const [permission, requestPermission] = Camera.useCameraPermissions();
+```
+
+#### 2. Location Services
+```bash
+npm install expo-location
+```
+
+#### 3. Opening External Apps
+```bash
+npm install expo-linking
+```
+
+Use `Linking.openURL()` to open Uber, Lyft, etc.
+
 ---
 
-## 🔧 Adding Features
+## 📱 Building for Production
 
-The app is designed for **incremental development**. Here's the recommended order:
+### Create Production Build
 
-### 1. Camera Access
-```yaml
-# Add to pubspec.yaml
-dependencies:
-  camera: ^0.10.5+5
-```
-
-### 2. Face/Eye Detection
-```yaml
-# Add to pubspec.yaml
-dependencies:
-  google_ml_kit: ^0.16.3
-```
-
-### 3. Location Services
-```yaml
-# Add to pubspec.yaml
-dependencies:
-  geolocator: ^10.1.0
-  url_launcher: ^6.2.1
-```
-
-After adding each dependency:
 ```bash
-flutter pub get
-flutter run
+# Install EAS CLI
+npm install -g eas-cli
+
+# Login to Expo
+eas login
+
+# Build for iOS
+eas build --platform ios
+
+# Build for Android
+eas build --platform android
+```
+
+### Publishing Updates (Over-the-Air)
+
+```bash
+eas update --branch production
 ```
 
 ---
 
 ## 🤝 Sharing with Friends
 
-### Option 1: Git Clone (Easiest for developers)
-They need Flutter installed, then:
-```bash
-git clone https://github.com/YOUR_USERNAME/okn-saferide.git
-cd okn-saferide
-flutter pub get
-flutter run
-```
+### Option 1: Expo Go (Easiest - No Build Required)
+1. Start dev server: `npm start`
+2. Send friend the QR code or link
+3. They scan it with Expo Go app
+4. ✅ App runs immediately!
 
-### Option 2: TestFlight (Best for non-developers)
-- Requires Apple Developer account ($99/year)
-- Build and upload to App Store Connect
-- Add friends as testers
+**Limitations**: Only works while dev server is running, requires Expo Go app
 
-### Option 3: Direct Install (Free, short-term)
-- Friend needs Xcode
-- Install via their Apple ID
-- App expires after 7 days (free account) or 1 year (paid)
+### Option 2: Development Build (Better Experience)
+1. Build a development app: `eas build --profile development`
+2. Install the build on their phone
+3. They can run it without Expo Go!
+
+### Option 3: TestFlight / Play Store Internal Testing
+1. Create production build: `eas build --platform ios/android`
+2. Upload to TestFlight (iOS) or Internal Testing (Android)
+3. Add friends as testers
+4. ✅ Professional distribution!
 
 ---
 
 ## 🐛 Troubleshooting
 
-### "No devices found"
+### "Unable to connect to Metro"
+- Make sure your phone and computer are on the same WiFi network
+- Try restarting the dev server: `npm start --clear`
+
+### "Error: expo-cli not found"
 ```bash
-flutter devices
-# Make sure your iPhone shows up
+npm install -g expo-cli
 ```
 
-### "Code signing error"
-1. Open `ios/Runner.xcworkspace` in Xcode
-2. Select Runner > Signing & Capabilities
-3. Choose your Team (Apple ID)
-
-### "Pod install failed"
-```bash
-cd ios
-pod install
-cd ..
-flutter clean
-flutter run
+### Camera not working
+- Make sure you've added camera permissions to app.json:
+```json
+{
+  "expo": {
+    "ios": {
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app needs camera access..."
+      }
+    }
+  }
+}
 ```
 
-### Camera permission not working
-- Add permissions to `ios/Runner/Info.plist` (see [IOS_PERMISSIONS.md](IOS_PERMISSIONS.md))
+### Metro bundler cache issues
+```bash
+# Clear cache and restart
+npm start -- --clear
+# or
+expo start -c
+```
 
 ---
 
 ## 📚 Resources
 
-- **Flutter Docs**: https://docs.flutter.dev
-- **ML Kit**: https://developers.google.com/ml-kit
+- **Expo Documentation**: https://docs.expo.dev
+- **React Native Docs**: https://reactnative.dev
+- **Expo Go App**: [iOS](https://apps.apple.com/app/expo-go/id982107779) | [Android](https://play.google.com/store/apps/details?id=host.exp.exponent)
 - **OKN Research**: [Various academic papers on optokinetic nystagmus]
+
+---
+
+## 🎨 Technologies Used
+
+- **React Native** - Cross-platform mobile framework
+- **Expo** - Development platform and tooling
+- **TypeScript** - Type-safe JavaScript
+- **React Native SVG** - For animated stripe rendering
+- **Expo Screen Orientation** - Lock portrait mode
 
 ---
 
@@ -217,24 +243,25 @@ This is a demo/research project. Use at your own risk.
 ## 🎯 Roadmap
 
 **v1.0** (Current)
-- Basic UI
-- Simulated test flow
-- Results display
+- ✅ Basic UI
+- ✅ Simulated test flow
+- ✅ Results display
+- ✅ Expo Go compatible
 
 **v1.1** (Next)
-- Real camera integration
-- Basic eye detection
+- [ ] Real camera integration
+- [ ] Basic eye detection
 
 **v1.2** (Future)
-- Full OKN algorithm
-- Location services
-- Ride integration
+- [ ] Full OKN algorithm
+- [ ] Location services
+- [ ] Ride integration
 
 **v2.0** (Advanced)
-- Machine learning improvements
-- User accounts
-- Historical data
-- Advanced analytics
+- [ ] Machine learning improvements
+- [ ] User accounts
+- [ ] Historical data
+- [ ] Advanced analytics
 
 ---
 
@@ -245,6 +272,16 @@ Found a bug? Want to add a feature?
 2. Create a feature branch
 3. Make your changes
 4. Submit a pull request
+
+---
+
+## 🚀 Why Expo?
+
+- **Fast development**: Hot reload, instant updates
+- **Easy sharing**: Friends can test via QR code
+- **Cross-platform**: One codebase for iOS & Android
+- **Rich ecosystem**: Camera, location, notifications built-in
+- **Over-the-air updates**: Push updates without app store review
 
 ---
 
